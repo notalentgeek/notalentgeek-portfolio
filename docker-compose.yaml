@@ -1,0 +1,43 @@
+services:
+  # PHP and Laravel Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www  # Mount the Current Directory to /var/www in the Container
+      - ./vendor:/var/www/vendor  # Optional: Mount Vendor Directory Separately to Persist Dependencies
+    ports:
+      - "8000:8000"
+    networks:
+      - laravel
+
+    # Install Additional PHP Extensions and Composer
+    environment:
+      SERVICE_NAME: app
+      PHP_LARAVEL_VERSION: 8
+    command: bash -c "composer install && php artisan serve --host=0.0.0.0 --port=8000"
+    depends_on:
+      - db
+
+  # PostgreSQL Service
+  db:
+    image: postgres:15.8-alpine3.20
+    volumes:
+      - C:\Users\mikae\Downloads\Projects\Laravel\notalentgeek-portfolio\postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: notalentgeek_portfolio
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    networks:
+      - laravel
+
+networks:
+  laravel:
+    driver: bridge
+
+volumes:
+  pgdata:
+    driver: local
