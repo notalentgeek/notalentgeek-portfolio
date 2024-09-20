@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\helpers\SlugHelper;
+use Helpers\SlugHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;

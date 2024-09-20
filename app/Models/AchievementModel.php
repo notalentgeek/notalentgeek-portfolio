@@ -14,10 +14,8 @@ class AchievementModel extends BaseModel
         'rank',
         'date',
         'name',
-        'institution_ids',
         'location_id',
         'description',
-        'related_party_ids',
     ];
 
     // The slug is automatically handled by `BaseModel` .
@@ -35,12 +33,22 @@ class AchievementModel extends BaseModel
     // Relationship With the `ContactModel` for Institutions
     public function institutions(): BelongsToMany
     {
-        return $this->belongsToMany(Contact::class, 'achievement_contact_institutions', 'achievement_id', 'contact_id');
+        return $this->hasMany(
+            Contact::class,
+            'achievement_contact_institutions',
+            'achievement_id',
+            'contact_id',
+        );
     }
 
     // Relationship With the `ContactModel` for Related Parties
     public function relatedParties(): BelongsToMany
     {
-        return $this->belongsToMany(Contact::class, 'achievement_contact_related_parties', 'achievement_id', 'contact_id');
+        return $this->hasMany(
+            Contact::class,
+            'achievement_contact_related_parties',
+            'achievement_id',
+            'contact_id',
+        );
     }
 }
