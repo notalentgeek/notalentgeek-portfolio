@@ -35,9 +35,7 @@ class AchievementModel extends BaseModel
     {
         return $this->hasMany(
             Contact::class,
-            'achievement_contact_institutions',
             'achievement_id',
-            'contact_id',
         );
     }
 
@@ -46,9 +44,7 @@ class AchievementModel extends BaseModel
     {
         return $this->hasMany(
             Contact::class,
-            'achievement_contact_related_parties',
             'achievement_id',
-            'contact_id',
         );
     }
 }

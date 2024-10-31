@@ -24,24 +24,36 @@ class ContactModel extends BaseModel
     // One-to-Many Relationship With the `AddressModel` for Addresses
     public function addresses(): HasMany
     {
-        return $this->hasMany(AddressModel::class, 'contact_id');
+        return $this->hasMany(
+            AddressModel::class,
+            'contact_id',
+        );
     }
 
     // One-to-Many Relationship With the `PhoneNumberModel` for Phone Numbers
     public function phoneNumbers(): HasMany
     {
-        return $this->hasMany(PhoneNumberModel::class, 'contact_id');
+        return $this->hasMany(
+            PhoneNumberModel::class,
+            'contact_id',
+        );
     }
 
     // One-to-Many Relationship With the `EmailModel` for Emails
     public function emails(): HasMany
     {
-        return $this->hasMany(EmailModel::class, 'contact_id');
+        return $this->hasMany(
+            EmailModel::class,
+            'contact_id',
+        );
     }
 
     // One-to-Many Relationship With the `LinkModel` for Links
     public function links(): HasMany
     {
-        return $this->hasMany(LinkModel::class, 'contact_id');
+        return $this->hasMany(
+            LinkModel::class,
+            'contact_id',
+        );
     }
 }

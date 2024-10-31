@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContactsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the Migrations
@@ -87,4 +87,4 @@ class CreateContactsTable extends Migration
         Schema::dropIfExists('contact_address');
         Schema::dropIfExists('contacts');
     }
-}
+};
