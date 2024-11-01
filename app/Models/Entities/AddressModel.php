@@ -1,6 +1,6 @@
 <?php
 
-namespace Helpers;
+namespace App\Models\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -61,7 +61,7 @@ class AddressModel extends BaseModel
         return implode(', ', $addressParts);
     }
 
-    // Belongs-to Relationship With the `ContactModel` for Contact
+    // Relationship With the `ContactModel` for Contact
     public function contact(): BelongsTo
     {
         return $this->belongsTo(ContactModel::class, 'contact_id');
