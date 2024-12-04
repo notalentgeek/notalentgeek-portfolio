@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasAccessorsMutatorsTraits;
+use Carbon\Carbon;
 use Helpers\SlugHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,10 +12,7 @@ use Illuminate\Support\Str;
 
 abstract class BaseModel extends Model
 {
-    use SoftDeletes;
-
-    // Default Fields to Be Added
-    protected $fillable = ['name'];
+    use HasAccessorsMutatorsTraits, SoftDeletes;
 
     public static function booted()
     {
@@ -21,8 +20,15 @@ abstract class BaseModel extends Model
 
         static::creating(function ($model) {
             $model->uuid = Str::uuid();
-            $model->slug = SlugHelper::generateUniqueSlug($model->name, self::class);
             $model->created_by = Auth::id();
+
+            // Check if `name` Is Non-empty (Not Empty String or Spaces)
+            if (trim($model->name)) {
+                $model->slug = SlugHelper::generateUniqueSlug($model->name, self::class);
+            } else {
+                // Set `slug` To Empty if `name` Is Empty or Just Spaces
+                $model->slug = '';
+            }
         });
 
         static::updating(function ($model) {
@@ -41,7 +47,7 @@ abstract class BaseModel extends Model
         });
     }
 
-    // Relationships: `created_by` , `updated_by` , `deleted_by` (Assuming You Use A User Model)
+    // Relationships: `created_by`, `updated_by`, and `deleted_by`
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -58,4 +64,25 @@ abstract class BaseModel extends Model
     }
 
     // Timestamps (Handled Automatically By Laravel)
+
+    // Getters and Setters
+    // Define the Table Fields That Can Be Mass-Assigned
+    public function getFillable()
+    {
+        return array_merge(parent::getFillable(), [
+            'uuid',
+            'name',
+        ]);
+    }
+
+    // Define the JSON Typecast
+    public function getCasts()
+    {
+        return array_merge(parent::getCasts(), [
+            'uuid' => 'string',
+            'created_by' => 'integer',
+            'updated_by' => 'integer',
+            'deleted_by' => 'integer',
+        ]);
+    }
 }
