@@ -61,9 +61,37 @@ class AddressModel extends BaseModel
         return implode(', ', $addressParts);
     }
 
-    // Relationship With the `ContactModel` for Contact
-    public function contact(): BelongsTo
+    // Relationship With the `ContactModel` for Contacts
+    public function contacts(): BelongsToMany
     {
-        return $this->belongsTo(ContactModel::class, 'contact_id');
+        return $this->belongsToMany(
+            ContactModel::class,
+            DatabaseConstant::PIVOT_TABLE_ADDRESS_CONTACT,
+            'address_id',
+            'contact_id',
+        )->withPivot(
+            'active',
+            'created_by',
+            'updated_by',
+            'created_at',
+            'updated_at'
+        );
+    }
+
+    // Relationship With the `AchievementModel` for Achievements
+    public function achievements(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Achievement::class,
+            DatabaseConstant::PIVOT_TABLE_ACHIEVEMENT_ADDRESS,
+            'address_id',
+            'achievement_id'
+        )->withPivot(
+            'active',
+            'created_by',
+            'updated_by',
+            'created_at',
+            'updated_at'
+        );
     }
 }

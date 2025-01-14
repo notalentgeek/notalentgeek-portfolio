@@ -3,6 +3,8 @@
 namespace App\Models\Entities;
 
 use App\Constants\DatabaseConstant;
+use App\Models\Entities\AddressModel;
+use App\Models\Entities\ContactModel;
 use App\Models\Traits\HasAccessorsMutatorsTraits;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,33 +18,45 @@ class AchievementModel extends BaseModel
     public function addresses(): BelongsToMany
     {
         return $this->belongsToMany(
-            Address::class,
+            AddressModel::class,
             DatabaseConstant::PIVOT_TABLE_ACHIEVEMENT_ADDRESS,
             'achievement_id',
             'address_id',
-        );
+        )->withPivot(
+            'active',
+            'created_by',
+            'updated_by'
+        )->withTimestamps();
     }
 
     // Relationship With the `ContactModel` for Institutions
     public function institutions(): BelongsToMany
     {
         return $this->belongsToMany(
-            Contact::class,
+            ContactModel::class,
             DatabaseConstant::PIVOT_TABLE_ACHIEVEMENT_CONTACT_INSTITUTIONS,
             'achievement_id',
             'contact_id',
-        );
+        )->withPivot(
+            'active',
+            'created_by',
+            'updated_by'
+        )->withTimestamps();
     }
 
     // Relationship With the `ContactModel` for Related Parties
     public function relatedParties(): BelongsToMany
     {
         return $this->belongsToMany(
-            Contact::class,
+            ContactModel::class,
             DatabaseConstant::PIVOT_TABLE_ACHIEVEMENT_CONTACT_RELATED_PARTIES,
             'achievement_id',
             'contact_id',
-        );
+        )->withPivot(
+            'active',
+            'created_by',
+            'updated_by'
+        )->withTimestamps();
     }
 
     // Accessors and Mutators
